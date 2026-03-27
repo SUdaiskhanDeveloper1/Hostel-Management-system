@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// Switch this to your deployed backend URL when going live!
 const api = axios.create({
-  baseURL: 'https://hostel-management-system-iota-blond.vercel.app/',
+  // baseURL: 'http://localhost:5000/api', // Local Development
+  baseURL: 'https://hostel-management-system-iota-blond.vercel.app/api', // Production URL (if backend is on Vercel)
 });
 
 // Request interceptor to add the auth token header to requests
