@@ -36,7 +36,7 @@ export default function Expenses() {
     xlsx.writeFile(wb, "Expenses_Data.xlsx");
   };
 
-  const filteredData = expenses.filter(e => 
+  const filteredData = expenses.filter(e =>
     e.category?.toLowerCase().includes(searchText.toLowerCase()) ||
     e._id?.toLowerCase().includes(searchText.toLowerCase()) ||
     e.month?.toLowerCase().includes(searchText.toLowerCase())
@@ -44,16 +44,16 @@ export default function Expenses() {
 
   return (
     <>
-      <Card 
+      <Card
         bordered={false}
         style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
         title={<Title level={4} style={{ margin: 0, fontWeight: 600 }}>Expenses - {filteredData.length}</Title>}
         extra={
           <Space>
-            <Input 
-              prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />} 
-              placeholder="Search Category, ID, Month" 
-              style={{ width: 220, borderRadius: 6 }} 
+            <Input
+              prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+              placeholder="Search Category, ID, Month"
+              style={{ width: 220, borderRadius: 6 }}
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
             />
@@ -64,9 +64,26 @@ export default function Expenses() {
           </Space>
         }
       >
-        <Table 
-          dataSource={filteredData} 
-          rowKey="_id" 
+
+        <Modal
+          title="View Expense"
+          open={modal === 'expense_view'}
+          onCancel={() => setModal(null)}
+          footer={null}
+        >
+          {viewingItem && (
+            <div>
+              <p><strong>Category:</strong> {viewingItem.category}</p>
+              <p><strong>Month:</strong> {viewingItem.month}</p>
+              <p><strong>Amount:</strong> PKR {viewingItem.amount}</p>
+              <p><strong>Date:</strong> {viewingItem.date}</p>
+              {/* <p><strong>ID:</strong> {viewingItem._id}</p> */}
+            </div>
+          )}
+        </Modal>
+        <Table
+          dataSource={filteredData}
+          rowKey="_id"
           loading={loading}
           pagination={{ pageSize: 10, position: ['bottomRight'] }}
           columns={[
@@ -78,6 +95,7 @@ export default function Expenses() {
             {
               title: 'View', render: (_, r) => (
                 <Space>
+                  <Button shape="circle" icon={<EyeOutlined />} onClick={() => { setViewingItem(r); setModal('expense_view'); }} />
                   <Button shape="circle" icon={<EditOutlined />} onClick={() => { setViewingItem(r); form.setFieldsValue({ ...r, m: dayjs(r.month, "MMMM YYYY"), c: r.category, a: r.amount }); setModal('expense_edit'); }} />
                   <Popconfirm title="Delete record?" onConfirm={() => handleDelete(r._id)}>
                     <Button shape="circle" danger icon={<DeleteOutlined />} />
@@ -85,7 +103,7 @@ export default function Expenses() {
                 </Space>
               )
             }
-          ]} 
+          ]}
         />
       </Card>
 

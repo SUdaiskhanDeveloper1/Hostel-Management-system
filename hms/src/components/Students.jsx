@@ -116,7 +116,7 @@ export default function Students() {
           pagination={{ pageSize: 10, position: ['bottomRight'] }}
           columns={[
             { title: 'No', render: (_, __, index) => index + 1, width: 60 },
-            { title: 'Student Info', render: (_, r) => <Space direction="vertical" size={0}><Text strong>{r.name}</Text><Text type="secondary" style={{ fontSize: 11 }}>{r._id} | {r.phone}</Text></Space> },
+            { title: 'Student Info', render: (_, r) => <Space direction="vertical" size={0}><Text strong>{r.name}</Text><Text type="secondary" style={{ fontSize: 11 }}>{r.cnic} | {r.phone}</Text></Space> },
             { title: 'Room', dataIndex: 'room', render: (r) => <Tag color="geekblue">Room {r}</Tag> },
             { title: 'Status', dataIndex: 'status', render: (s) => <Badge status={s === 'Active' ? 'success' : 'error'} text={s} /> },
             {
